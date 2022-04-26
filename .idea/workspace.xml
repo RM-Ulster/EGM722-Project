@@ -5,8 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81a4be02-e14b-4ae9-a138-c408ae811cf4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/EGM722-Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/EGM722-Project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Projct Code.py" beforeDir="false" afterPath="$PROJECT_DIR$/Projct Code.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project Code.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.GSS_CODE.atx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.cpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.dbf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.prj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.shp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.shp.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.shx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,17 +41,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Uni/EGM722 - Programming/Github/Week5/Practical5.ipynb",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/R/anaconda3/Scripts/conda.exe&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Projct Code" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EGM722-Project" />
@@ -85,13 +96,30 @@
       <workItem from="1650162338311" duration="714000" />
       <workItem from="1650238822668" duration="655000" />
       <workItem from="1650242070295" duration="345000" />
+      <workItem from="1650502679880" duration="3965000" />
+      <workItem from="1650583955550" duration="766000" />
+      <workItem from="1650584758525" duration="2291000" />
+      <workItem from="1650587149189" duration="7205000" />
+      <workItem from="1650666407134" duration="9998000" />
+      <workItem from="1650929583749" duration="12749000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/EGM722_Project$Projct_Code.coverage" NAME="Projct Code Coverage Results" MODIFIED="1650161843992" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/EGM722_Project$Projct_Code.coverage" NAME="Projct Code Coverage Results" MODIFIED="1650949656897" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
