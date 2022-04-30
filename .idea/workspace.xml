@@ -5,17 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81a4be02-e14b-4ae9-a138-c408ae811cf4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/EGM722-Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/EGM722-Project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Project Code.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.GSS_CODE.atx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.cpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.dbf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.prj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.shp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.shp.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_files/London_Ward.shx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Projct Code.py" beforeDir="false" afterPath="$PROJECT_DIR$/Projct Code.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,6 +93,9 @@
       <workItem from="1650587149189" duration="7205000" />
       <workItem from="1650666407134" duration="9998000" />
       <workItem from="1650929583749" duration="12749000" />
+      <workItem from="1651013895513" duration="11720000" />
+      <workItem from="1651194332723" duration="3908000" />
+      <workItem from="1651242342376" duration="8070000" />
     </task>
     <servers />
   </component>
@@ -120,6 +114,6 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/EGM722_Project$Projct_Code.coverage" NAME="Projct Code Coverage Results" MODIFIED="1650949656897" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/EGM722_Project$Projct_Code.coverage" NAME="Projct Code Coverage Results" MODIFIED="1651263516147" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
