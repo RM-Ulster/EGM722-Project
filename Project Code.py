@@ -1,4 +1,4 @@
-#Import the required modules
+# 1 Import the required modules
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point, LineString, Polygon
@@ -8,52 +8,82 @@ import cartopy.crs as ccrs
 import matplotlib.patches as mpatches
 import matplotlib.lines as mlines
 
-#Load the wards dataset from the data_files folder
+# 2 Load and prepare files for analysis
+# 2.1 Load the datasets from the data_files folder
 wards = gpd.read_file('data_files/Electoral_Wards.shp')
+green_space = gpd.read_file('data_files/OS_Green_Space.shp')
+
+# 2.2 Ensure CRS is the same for both files
 wards = wards.to_crs(epsg=27700)
+green_space = green_space.to_crs(epsg=27700)
 
-# The shapefiles have the area provided in hectares, this can be verified by printing the header
-print(wards.head(0))
+print('CRS matches: ', (green_space.crs == wards.crs)) # Verify that CRS is the same for both
 
-#Convert hectares to square metres
+# 2.3 Convert ward area from hectares to m^2
 for i, row in wards.iterrows():
     wards.loc[i, 'Area_Ward'] = row['HECTARES'] * 10000
 
-print(wards.head())
+# print(wards.head(0))
 
-# load the Green space shapefiles
-green_space = gpd.read_file('data_files/OS_Green_Space.shp')
-green_space = green_space.to_crs(epsg=27700)
+# 2.4 Clip Green Space shapefile to London area
+green_clip = gpd.clip(green_space, wards)
 
-# Ensure projection is the same as that of the wards
-print(green_space.crs == wards.crs)
-
-#Calculate area green space in each ward in m2
-for i, row in green_space.iterrows():
-    green_space.loc[i, 'Area_GS'] = row['geometry'].area
-
-print(green_space.head())
-
-green_clip = gpd.clip(green_space, wards) # Clip Green Space shapefile to London area
+ward_clip = wards[wards['NAME'] == 'ward']
 
 # Calculate area of green space in each ward
-for ward in wards['NAME'].unique():
-    for ii, row in wards.iterrows():
-        tmp_clip = gpd.clip(green_clip, wards[wards['NAME'] == ward])
-        tmp_clip.loc[i, 'NAME'] = ward
-        tmp_clip['Area'] = tmp_clip['geometry'].area
-        wards.loc[ii, 'GS_Area'] = tmp_clip['Area'].sum()
+for ii, row in wards.iterrows():
+    tmp_clip = gpd.clip(green_clip, ward_clip)
+    tmp_clip['Area'] = tmp_clip['geometry'].area
+    wards.loc[ii, 'GS_Area'] = tmp_clip['Area'].sum()
+    tmp_clip['NAME'] = 'ward'
+    wards.loc[ii, 'ward_name'] = row['NAME']
+    # tmp_clip['Sum'] = wards.groupby(['NAME'])['GS_Area'].sum()
 
 print(wards.head(-1))
+
+#for i, row in wards.iterrows():
+#    wards.loc[i, 'GS_Sum'] = wards.groupby(['NAME'])['GS_Area'].sum()
+
+#print(wards.head(-1))
+
+gs_sum = (wards.groupby(['NAME'])['GS_Area'].sum())
+print(gs_sum)
+
+joined = wards.set_index('NAME').join(gs_sum.rename('Total GS Area'))
+
+gs_area = joined[joined['Total GS Area'] == 'total_gs_area']
+area_ward = joined[joined['Area_Ward'] == 'area_ward']
+
+for i, row in joined.iterrows():
+    joined.loc[i, 'gs_percent'] = (row['Total GS Area'] / row['Area_Ward'])
+
+print(joined.head(0))
+'''
+for ward in wards['NAME'].unique():
+    tmp_clip = gpd.clip(green_clip, wards[wards['NAME'] == ward])
+    for i, row in tmp_clip.iterrows():
+        tmp_clip.loc[i, 'GS_Area'] = row['geometry'].area
+        tmp_clip.loc[i, 'NAME'] = ward
+        for ii, row in wards.iterrows():
+            tmp_clip = gpd.clip(green_clip, wards[wards['NAME'] == ward])
+            tmp_clip['Area'] = tmp_clip['geometry'].area
+            wards.loc[ii, 'GS_Area'] = tmp_clip['Area'].sum()
+
+
+
+
+
+
+
         #tmp_clip.loc[i, 'GS_Area'] = row['geometry'].area # Calculate GS in each ward, assign to each row
         #tmp_clip.loc[i, 'GS_Sum'] = row['GS_Area'].groupby(['NAME'])['GS_Area'].sum() # Sum GS in each ward
         #tmp_clip.loc[i, 'GS_Sum'] = row['geometry'].area.groupby(['NAME'])['GS_Area'].sum()
+'''
 '''
     clipped.append(tmp_clip)
 
 clipped_gdf = gpd.GeoDataFrame(pd.concat(clipped))
 '''
-#GS_SUM = (clipped_gdf.groupby(['NAME'])['GS_Area'].sum())
 """
 for i, row in clipped_gdf.iterrows():
     clipped_gdf.loc[i, 'GS_Sum'] = row['geometry'].area.groupby(['NAME'])['GS_Area'].sum() # Sum GS in each ward
@@ -61,7 +91,7 @@ for i, row in clipped_gdf.iterrows():
 #print(clipped_gdf)
 
 """
-# Output green space percenatge to a map
+# Output green space percentage to a map
 
 plt.ion() # make the plotting interactive
 
