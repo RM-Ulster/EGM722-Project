@@ -1,3 +1,10 @@
+"""
+Automated calculation and mapping of greenspace in London Electoral wards
+
+
+
+"""
+
 # 1 Import the required modules
 import pandas as pd
 import geopandas as gpd
@@ -9,6 +16,7 @@ import matplotlib.patches as mpatches
 import matplotlib.lines as mlines
 
 # 2 Load and prepare files for analysis
+
 # 2.1 Load the datasets from the data_files folder
 wards = gpd.read_file('data_files/Electoral_Wards.shp')
 green_space = gpd.read_file('data_files/OS_Green_Space.shp')
@@ -20,31 +28,32 @@ green_space = green_space.to_crs(epsg=27700)
 print('CRS matches: ', (green_space.crs == wards.crs)) # Verify that CRS is the same for both
 
 # 2.3 Convert ward area from hectares to m^2
-for i, row in wards.iterrows():
-    wards.loc[i, 'Area_Ward'] = row['HECTARES'] * 10000
 
-# print(wards.head(0))
+for i, row in wards.iterrows(): # iterate over each row in the GeoDataFrame
+    wards.loc[i, 'area_calc'] = row['geometry'].area
+
+print(wards.head(10))
 
 # 2.4 Clip Green Space shapefile to London area
 green_clip = gpd.clip(green_space, wards)
 
 ward_clip = wards[wards['NAME'] == 'ward']
 
-# Calculate area of green space in each ward
+# 3 Calculate area of green space in each ward
+
+# 3.1
 for ii, row in wards.iterrows():
-    tmp_clip = gpd.clip(green_clip, ward_clip)
+    tmp_clip = gpd.clip(green_space, wards)
     tmp_clip['Area'] = tmp_clip['geometry'].area
     wards.loc[ii, 'GS_Area'] = tmp_clip['Area'].sum()
     tmp_clip['NAME'] = 'ward'
     wards.loc[ii, 'ward_name'] = row['NAME']
-    # tmp_clip['Sum'] = wards.groupby(['NAME'])['GS_Area'].sum()
 
-print(wards.head(-1))
-
-#for i, row in wards.iterrows():
-#    wards.loc[i, 'GS_Sum'] = wards.groupby(['NAME'])['GS_Area'].sum()
+print(wards.head(10))
 
 #print(wards.head(-1))
+
+# 2.6 Sum area of green space in each ward
 
 gs_sum = (wards.groupby(['NAME'])['GS_Area'].sum())
 print(gs_sum)
@@ -58,6 +67,7 @@ for i, row in joined.iterrows():
     joined.loc[i, 'gs_percent'] = (row['Total GS Area'] / row['Area_Ward'])
 
 print(joined.head(0))
+
 '''
 for ward in wards['NAME'].unique():
     tmp_clip = gpd.clip(green_clip, wards[wards['NAME'] == ward])
