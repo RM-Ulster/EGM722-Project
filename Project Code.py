@@ -6,14 +6,13 @@ Automated calculation and mapping of greenspace in London Electoral wards
 """
 
 # 1 Import the required modules
-import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point, LineString, Polygon
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 from cartopy.feature import ShapelyFeature
 import cartopy.crs as ccrs
 import matplotlib.patches as mpatches
-import matplotlib.lines as mlines
 
 # 2 Load and prepare files for analysis
 
@@ -65,12 +64,20 @@ for i, row in joined.iterrows():
 
 print(joined.head(10))
 
-"""
+#gs_percent = joined['gs_percent']
+#print('{:.2f} total percentage of green space'.format(gs_percent))
+
 # Output green space percentage to a map
 
 plt.ion() # make the plotting interactive
 
-# generate matplotlib handles to create a legend of the features we put in our map.
+'''
+generate matplotlib handles to create a legend of the features we put in our map.
+
+Original code by Bob McNabb at: 
+https://github.com/iamdonovan/egm722/blob/week3/Week3/Practical3.ipynb
+'''
+
 def generate_handles(labels, colors, edge='k', alpha=1):
     lc = len(colors)  # get the length of the color list
     handles = []
@@ -78,43 +85,32 @@ def generate_handles(labels, colors, edge='k', alpha=1):
         handles.append(mpatches.Rectangle((0, 0), 1, 1, facecolor=colors[i % lc], edgecolor=edge, alpha=alpha))
     return handles
 
-# create a scale bar of length 20 km in the upper right corner of the map
-def scale_bar(ax, location=(0.92, 0.95)):
-    llx0, llx1, lly0, lly1 = ax.get_extent(ccrs.PlateCarree())
-    sbllx = (llx1 + llx0) / 2
-    sblly = lly0 + (lly1 - lly0) * location[1]
+# create a crs using ccrs.UTM() that corresponds to our CRS
+myCRS = ccrs.UTM(29)
+# create a figure of size 10x10 (representing the page size in inches
+fig, ax = plt.subplots(1, 1, figsize=(10, 10), subplot_kw=dict(projection=myCRS))
 
-    tmc = ccrs.TransverseMercator(sbllx, sblly)
-    x0, x1, y0, y1 = ax.get_extent(tmc)
-    sbx = x0 + (x1 - x0) * location[0]
-    sby = y0 + (y1 - y0) * location[1]
+# add gridlines below
+gridlines = ax.gridlines(draw_labels=True,
+                         xlocs=[-8, -7.5, -7, -6.5, -6, -5.5],
+                         ylocs=[54, 54.5, 55, 55.5])
+gridlines.right_labels = False
+gridlines.bottom_labels = False
 
-    plt.plot([sbx, sbx - 20000], [sby, sby], color='k', linewidth=9, transform=tmc)
-    plt.plot([sbx, sbx - 10000], [sby, sby], color='k', linewidth=6, transform=tmc)
-    plt.plot([sbx-10000, sbx - 20000], [sby, sby], color='w', linewidth=6, transform=tmc)
+# to make a nice colorbar that stays in line with our map, use these lines:
+divider = make_axes_locatable(ax)
+cax = divider.append_axes("right", size="5%", pad=0.1, axes_class=plt.Axes)
 
-    plt.text(sbx, sby-4500, '20 km', transform=tmc, fontsize=8)
-    plt.text(sbx-12500, sby-4500, '10 km', transform=tmc, fontsize=8)
-    plt.text(sbx-24500, sby-4500, '0 km', transform=tmc, fontsize=8)
+# plot the ward data into our axis, using
+gs_plot = joined.plot(column='gs_percent', ax=ax, vmin=1000, vmax=8000, cmap='viridis',
+                       legend=True, cax=cax, legend_kwds={'label': 'Resident Population'})
 
-# load the outline of London wards for a backdrop
-outline = gpd.read_file('data_files/Electoral_Wards.shp')
+ward_outlines = ShapelyFeature(joined['geometry'], myCRS, edgecolor='r', facecolor='none')
 
-myFig = plt.figure(figsize=(10, 10))  # create a figure of size 10x10 inches
+ax.add_feature(ward_outlines)
+county_handles = generate_handles([''], ['none'], edge='r')
 
-myCRS = ccrs.UTM(29N) # create a Universal Transverse Mercator reference system to transform our data.
+ax.legend(county_handles, ['Ward Boundaries'], fontsize=12, loc='upper left', framealpha=1)
 
-ax = plt.axes(projection=ccrs.Mercator())  # finally, create an axes object in the figure, using a Mercator
-# projection, where we can actually plot our data.
-
-# first, we just add the outline of Northern Ireland using cartopy's ShapelyFeature
-outline_feature = ShapelyFeature(outline['geometry'], myCRS, edgecolor='k', facecolor='w')
-xmin, ymin, xmax, ymax = outline.total_bounds
-ax.add_feature(outline_feature) # add the features we've created to the map.
-
-# using the boundary of the shapefile features, zoom the map to our area of interest
-ax.set_extent([xmin, xmax, ymin, ymax], crs=myCRS) # because total_bounds gives output as xmin, ymin, xmax, ymax,
-# but set_extent takes xmin, xmax, ymin, ymax, we re-order the coordinates here.
-
-myFig # re-display the figure here.
-"""
+# save the figure
+# fig.savefig('sample_map.png', dpi=300, bbox_inches='tight')
