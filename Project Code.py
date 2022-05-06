@@ -60,7 +60,7 @@ joined = wards.set_index('NAME').join(gs_sum.rename('Total GS Area'))
 
 # 3.5 Calculate percentage of green space in each ward
 for i, row in joined.iterrows():
-    joined.loc[i, 'gs_percent'] = (row['Total GS Area'] / row['area_calc'])
+    joined.loc[i, 'gs_percent'] = ((row['Total GS Area'] / row['area_calc']) * 100)
 
 print(joined.head(10))
 
@@ -105,10 +105,10 @@ cax = divider.append_axes("right", size="5%", pad=0.1, axes_class=plt.Axes)
 gs_plot = joined.plot(column='gs_percent', ax=ax, vmin=0, vmax=100, cmap='viridis',
                        legend=True, cax=cax, legend_kwds={'label': 'green space percent'})
 
-ward_outlines = ShapelyFeature(joined['geometry'], myCRS, edgecolor='r', facecolor='none')
+ward_outlines = ShapelyFeature(joined['geometry'], myCRS, edgecolor='y', facecolor='none')
 
 ax.add_feature(ward_outlines)
-county_handles = generate_handles([''], ['none'], edge='r')
+county_handles = generate_handles([''], ['none'], edge='y')
 
 ax.legend(county_handles, ['Ward Boundaries'], fontsize=12, loc='upper left', framealpha=1)
 
