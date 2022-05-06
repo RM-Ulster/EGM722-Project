@@ -102,8 +102,8 @@ divider = make_axes_locatable(ax)
 cax = divider.append_axes("right", size="5%", pad=0.1, axes_class=plt.Axes)
 
 # plot the ward data into our axis, using
-gs_plot = joined.plot(column='gs_percent', ax=ax, vmin=1000, vmax=8000, cmap='viridis',
-                       legend=True, cax=cax, legend_kwds={'label': 'Resident Population'})
+gs_plot = joined.plot(column='gs_percent', ax=ax, vmin=0, vmax=100, cmap='viridis',
+                       legend=True, cax=cax, legend_kwds={'label': 'green space percent'})
 
 ward_outlines = ShapelyFeature(joined['geometry'], myCRS, edgecolor='r', facecolor='none')
 
@@ -112,5 +112,7 @@ county_handles = generate_handles([''], ['none'], edge='r')
 
 ax.legend(county_handles, ['Ward Boundaries'], fontsize=12, loc='upper left', framealpha=1)
 
+fig
+
 # save the figure
-# fig.savefig('sample_map.png', dpi=300, bbox_inches='tight')
+fig.savefig('sample_map.png', dpi=300, bbox_inches='tight')
