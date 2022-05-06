@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="81a4be02-e14b-4ae9-a138-c408ae811cf4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Environment.yml.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Environment.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Project Code.py" beforeDir="false" afterPath="$PROJECT_DIR$/Project Code.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -100,6 +101,7 @@
       <workItem from="1651421198945" duration="4682000" />
       <workItem from="1651450065426" duration="5763000" />
       <workItem from="1651639499802" duration="13217000" />
+      <workItem from="1651790411626" duration="5360000" />
     </task>
     <servers />
   </component>
@@ -119,6 +121,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EGM722_Project$Projct_Code.coverage" NAME="Project Code Coverage Results" MODIFIED="1651371824509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/EGM722_Project$Project_Code.coverage" NAME="Project Code Coverage Results" MODIFIED="1651677578793" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/EGM722_Project$Project_Code.coverage" NAME="Project Code Coverage Results" MODIFIED="1651797374862" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

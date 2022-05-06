@@ -30,8 +30,6 @@ print('CRS matches: ', (green_space.crs == wards.crs)) # Verify that CRS is the 
 # 2.3 Clip Green Space shapefile to London area
 green_clip = gpd.clip(green_space, wards)
 
-ward_clip = wards[wards['NAME'] == 'ward']
-
 # 3 Calculations
 
 # 3.1 Calculate area of each ward
@@ -39,37 +37,33 @@ ward_clip = wards[wards['NAME'] == 'ward']
 for i, row in wards.iterrows():
     wards.loc[i, 'area_calc'] = row['geometry'].area
 
-# 3.1.1
-# print(wards.head(10))
-
-# 3.2 Calculate area of green space in each ward
-for i, row in wards.iterrows():
-    tmp_clip = gpd.clip(green_space, ward_clip)
-    tmp_clip['Area'] = tmp_clip['geometry'].area
-    wards.loc[i, 'GS_Area'] = tmp_clip['Area'].sum()
-    tmp_clip['NAME'] = 'ward'
-    wards.loc[i, 'ward_name'] = row['NAME']
-
+# 3.1.1 Show/hide table in output
 print(wards.head(10))
 
-#print(wards.head(-1))
+# 3.2 Calculate area of green space in each ward
+ward_clip = wards[wards['NAME'] == 'ward']
 
-# 2.6 Sum area of green space in each ward
+for i, row in wards.iterrows():
+    tmp_clip = gpd.clip(green_clip, row['geometry'])
+    tmp_clip['Area'] = tmp_clip['geometry'].area
+    wards.loc[i, 'GS_Area'] = tmp_clip['Area'].sum()
+    wards.loc[i, 'ward_name'] = row['NAME']
 
+# 3.2.1 Show/hide table in output
+print(wards.head(10))
+
+# 3.3 Sum area of green space in each ward
 gs_sum = (wards.groupby(['NAME'])['GS_Area'].sum())
 print(gs_sum)
 
+# 3.4 Join gs_sum to wards table
 joined = wards.set_index('NAME').join(gs_sum.rename('Total GS Area'))
 
-#gs_area = joined[joined['Total GS Area'] == 'total_gs_area']
-#area_ward = joined[joined['Area_Ward'] == 'area_ward']
-
+# 3.5 Calculate percentage of green space in each ward
 for i, row in joined.iterrows():
     joined.loc[i, 'gs_percent'] = (row['Total GS Area'] / row['area_calc'])
 
-print(joined.head(0))
-
-
+print(joined.head(10))
 
 """
 # Output green space percentage to a map
