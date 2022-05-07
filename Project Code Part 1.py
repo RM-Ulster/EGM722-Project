@@ -64,12 +64,13 @@ joined = wards.set_index('NAME').join(gs_sum.rename('Total GS Area'))
 for i, row in joined.iterrows():
     joined.loc[i, 'gs_percent'] = ((row['Total GS Area'] / row['area_calc']) * 100)
 
+# 3.5.1 Show/hide table in output
 print(joined.head(10))
 
-# save shapefile with calculated columns
-joined.to_file("Output/joined.shp")
+# 3.6 save shapefile with calculated columns
+# joined.to_file("Output/joined.shp")
 
-# Output green space percentage to a map
+# 4 Output green space percentage to a map
 
 plt.ion() # make the plotting interactive
 
@@ -110,11 +111,19 @@ county_handles = generate_handles([''], ['none'], edge='y')
 
 ax.legend(county_handles, ['Ward Boundaries'], fontsize=12, loc='upper left', framealpha=1)
 
+'''
 copyright_info = generate_handles([''], ['none'])
 
 ax.legend(copyright_info, 'Contains National Statistics data © Crown copyright and database right (2015) \n '
                            'Contains Ordnance Survey data © Crown copyright and database right (2015)',
                             fontsize=6, loc='lower right', framealpha=1)
+'''
+ax.text(0, 0, 'Contains National Statistics data © Crown copyright and database right (2015) \n '
+                           'Contains Ordnance Survey data © Crown copyright and database right (2015)',
+        verticalalignment ='bottom',
+        horizontalalignment ='left',
+        transform = ax.transAxes,
+        fontsize = 5)
 
-# save the figure
+# 4.1 save the figure
 fig.savefig('Output/sample_map.png', dpi=300, bbox_inches='tight')
