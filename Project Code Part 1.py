@@ -1,8 +1,9 @@
 """
-Automated calculation and mapping of greenspace in London Electoral wards
+Automated calculation and mapping of greenspace in London Electoral wards using OS data
 
+Percentage of total area that is greenspace in each ward is calculated in section 2
 
-
+Data is outputted to thematic map in section 3
 """
 
 # 1 Import the required modules
@@ -24,7 +25,8 @@ green_space = gpd.read_file('data_files/OS_Green_Space.shp')
 wards = wards.to_crs(epsg=27700)
 green_space = green_space.to_crs(epsg=27700)
 
-print('CRS matches: ', (green_space.crs == wards.crs)) # Verify that CRS is the same for both
+# 2.2.1 Verify that CRS is the same for both
+print('CRS matches: ', (green_space.crs == wards.crs))
 
 # 2.3 Clip Green Space shapefile to London area
 green_clip = gpd.clip(green_space, wards)
@@ -101,16 +103,18 @@ cax = divider.append_axes("right", size="5%", pad=0.1, axes_class=plt.Axes)
 gs_plot = joined.plot(column='gs_percent', ax=ax, vmin=0, vmax=50, cmap='viridis',
                        legend=True, cax=cax, legend_kwds={'label': 'Green Space Percentage (%)'})
 
-ward_outlines = ShapelyFeature(joined['geometry'], myCRS, edgecolor='y', facecolor='none')
+ward_outlines = ShapelyFeature(joined['geometry'], myCRS, edgecolor='y', facecolor='none', linewidth=0.25)
 
 ax.add_feature(ward_outlines)
 county_handles = generate_handles([''], ['none'], edge='y')
 
 ax.legend(county_handles, ['Ward Boundaries'], fontsize=12, loc='upper left', framealpha=1)
-ax.legend(county_handles, ['Contains National Statistics data © Crown copyright and database right [2015]'
-                           
-                           'Contains Ordnance Survey data © Crown copyright and database right [2015]'],
-                            fontsize=10, loc='lower right', framealpha=1)
+
+copyright_info = generate_handles([''], ['none'])
+
+ax.legend(copyright_info, 'Contains National Statistics data © Crown copyright and database right (2015) \n '
+                           'Contains Ordnance Survey data © Crown copyright and database right (2015)',
+                            fontsize=6, loc='lower right', framealpha=1)
 
 # save the figure
 fig.savefig('Output/sample_map.png', dpi=300, bbox_inches='tight')
