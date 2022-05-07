@@ -64,8 +64,8 @@ for i, row in joined.iterrows():
 
 print(joined.head(10))
 
-#gs_percent = joined['gs_percent']
-#print('{:.2f} total percentage of green space'.format(gs_percent))
+# save shapefile with calculated columns
+joined.to_file("Output/joined.shp")
 
 # Output green space percentage to a map
 
@@ -78,32 +78,28 @@ Original code by Bob McNabb at:
 https://github.com/iamdonovan/egm722/blob/week3/Week3/Practical3.ipynb
 '''
 
-def generate_handles(labels, colors, edge='k', alpha=1):
+def generate_handles(labels, colors, edge='k', alpha=0.5):
     lc = len(colors)  # get the length of the color list
     handles = []
     for i in range(len(labels)):
         handles.append(mpatches.Rectangle((0, 0), 1, 1, facecolor=colors[i % lc], edgecolor=edge, alpha=alpha))
     return handles
 
-# create a crs using ccrs.UTM() that corresponds to our CRS
 myCRS = ccrs.UTM(29)
-# create a figure of size 10x10 (representing the page size in inches
+
 fig, ax = plt.subplots(1, 1, figsize=(10, 10), subplot_kw=dict(projection=myCRS))
 
-# add gridlines below
 gridlines = ax.gridlines(draw_labels=True,
-                         xlocs=[-8, -7.5, -7, -6.5, -6, -5.5],
-                         ylocs=[54, 54.5, 55, 55.5])
-gridlines.right_labels = False
-gridlines.bottom_labels = False
+                         xlocs=[-0.3, -0.15, 0, 0.15, 0.3],
+                         ylocs=[51, 51.1, 51.2, 51.3, 51.4])
+gridlines.right_labels = True
+gridlines.bottom_labels = True
 
-# to make a nice colorbar that stays in line with our map, use these lines:
 divider = make_axes_locatable(ax)
 cax = divider.append_axes("right", size="5%", pad=0.1, axes_class=plt.Axes)
 
-# plot the ward data into our axis, using
-gs_plot = joined.plot(column='gs_percent', ax=ax, vmin=0, vmax=100, cmap='viridis',
-                       legend=True, cax=cax, legend_kwds={'label': 'green space percent'})
+gs_plot = joined.plot(column='gs_percent', ax=ax, vmin=0, vmax=50, cmap='viridis',
+                       legend=True, cax=cax, legend_kwds={'label': 'Green Space Percentage (%)'})
 
 ward_outlines = ShapelyFeature(joined['geometry'], myCRS, edgecolor='y', facecolor='none')
 
@@ -111,8 +107,10 @@ ax.add_feature(ward_outlines)
 county_handles = generate_handles([''], ['none'], edge='y')
 
 ax.legend(county_handles, ['Ward Boundaries'], fontsize=12, loc='upper left', framealpha=1)
-
-fig
+ax.legend(county_handles, ['Contains National Statistics data © Crown copyright and database right [2015]'
+                           
+                           'Contains Ordnance Survey data © Crown copyright and database right [2015]'],
+                            fontsize=10, loc='lower right', framealpha=1)
 
 # save the figure
-fig.savefig('sample_map.png', dpi=300, bbox_inches='tight')
+fig.savefig('Output/sample_map.png', dpi=300, bbox_inches='tight')
