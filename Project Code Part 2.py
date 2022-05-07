@@ -1,9 +1,13 @@
 """
-Automated calculation and mapping of greenspace in London Electoral wards using OS data.
+Automated calculation and mapping of greenspace changes in London Electoral wards between 2011 and 2018.
 
 Data is outputted to thematic map in section 4.
 
-This code was developed as a pilot for Project Code Part 2.
+This code can be applied across another study area and time frame to calculate changes in land cover
+- The troubleshooting guide in the read me provides assistance with adapting it.
+
+
+
 """
 
 # 1 Import the required modules
@@ -19,17 +23,21 @@ import matplotlib.patches as mpatches
 
 # 2.1 Load the datasets from the data_files folder
 wards = gpd.read_file('data_files/Electoral_Wards.shp')
-green_space = gpd.read_file('data_files/OS_Green_Space.shp')
+gs_2011 = gpd.read_file('data_files/2011_gs_simplified.shp')
+gs_2018 = gpd.read_file('data_files/2018_gs_simplified.shp')
 
-# 2.2 Ensure CRS is the same for both files
+# 2.2 Ensure CRS is the same for all files
 wards = wards.to_crs(epsg=27700)
-green_space = green_space.to_crs(epsg=27700)
+gs_2011 = gs_2011.to_crs(epsg=27700)
+gs_2018 = gs_2018.to_crs(epsg=27700)
 
-# 2.2.1 Verify that CRS is the same for both
-print('CRS matches: ', (green_space.crs == wards.crs))
+# 2.2.1 Verify that CRS is the same for all files
+print('2011 CRS matches wards: ', (gs_2011.crs == wards.crs))
+print('2018 CRS matches wards: ', (gs_2018.crs == wards.crs))
 
-# 2.3 Clip Green Space shapefile to London area
-green_clip = gpd.clip(green_space, wards)
+# 2.3 Clip Green Space shapefiles to London area
+gs_2011_clip = gpd.clip(gs_2011, wards)
+gs_2018_clip = gpd.clip(gs_2018, wards)
 
 # 3 Calculations
 
@@ -39,30 +47,36 @@ for i, row in wards.iterrows():
     wards.loc[i, 'area_calc'] = row['geometry'].area
 
 # 3.1.1 Show/hide table in output
-print(wards.head(10))
+#print(wards.head(10))
 
-# 3.2 Calculate area of green space in each ward
-ward_clip = wards[wards['NAME'] == 'ward']
+# 3.2 Calculate area of green space in each ward for both 2011 and 2018
 
 for i, row in wards.iterrows():
-    tmp_clip = gpd.clip(green_clip, row['geometry'])
+    tmp_clip = gpd.clip(gs_2011_clip, row['geometry'])
     tmp_clip['Area'] = tmp_clip['geometry'].area
-    wards.loc[i, 'GS_Area'] = tmp_clip['Area'].sum()
+    wards.loc[i, '2011_GS_Area'] = tmp_clip['Area'].sum()
+    tmp_clip = gpd.clip(gs_2018_clip, row['geometry'])
+    tmp_clip['Area'] = tmp_clip['geometry'].area
+    wards.loc[i, '2018_GS_Area'] = tmp_clip['Area'].sum()
     wards.loc[i, 'ward_name'] = row['NAME']
 
 # 3.2.1 Show/hide table in output
 print(wards.head(10))
 
 # 3.3 Sum area of green space in each ward
-gs_sum = (wards.groupby(['NAME'])['GS_Area'].sum())
-print(gs_sum)
+gs_2011_sum = (wards.groupby(['NAME'])['2011_GS_Area'].sum())
+print(gs_2011_sum)
+gs_2018_sum = (wards.groupby(['NAME'])['2018_GS_Area'].sum())
+print(gs_2018_sum)
 
-# 3.4 Join gs_sum to wards table
-joined = wards.set_index('NAME').join(gs_sum.rename('Total GS Area'))
+# 3.4 Join 'gs_sum' to 'wards' table to create a new table named 'joined'
+joined = wards.set_index('NAME').join[gs_2011_sum.rename('2011_GS_Sum'), gs_2018_sum.rename('2018_GS_Sum')]
 
 # 3.5 Calculate percentage of green space in each ward
 for i, row in joined.iterrows():
-    joined.loc[i, 'gs_percent'] = ((row['Total GS Area'] / row['area_calc']) * 100)
+    joined.loc[i, '2011_gs_perc'] = ((row['2011_GS_Sum'] / row['area_calc']) * 100)
+    joined.loc[i, '2018_gs_perc'] = ((row['2018_GS_Sum'] / row['area_calc']) * 100)
+    joined.loc[i, 'gs_change'] = (row['2018_gs_perc'] - row['2011_gs_perc'])
 
 # 3.5.1 Show/hide table in output
 print(joined.head(10))
@@ -95,8 +109,8 @@ fig, ax = plt.subplots(1, 1, figsize=(10, 10), subplot_kw=dict(projection=myCRS)
 divider = make_axes_locatable(ax)
 cax = divider.append_axes("right", size="5%", pad=0.1, axes_class=plt.Axes)
 
-gs_plot = joined.plot(column='gs_percent', ax=ax, vmin=0, vmax=50, cmap='Greens',
-                       legend=True, cax=cax, legend_kwds={'label': 'Green Space Percentage (%)'})
+gs_plot = joined.plot(column='gs_change', ax=ax, vmin=-25, vmax=25, cmap='RdGn',
+                       legend=True, cax=cax, legend_kwds={'label': 'Green Space Percentage Change (2011-2018) (%)'})
 
 ward_outlines = ShapelyFeature(joined['geometry'], myCRS, edgecolor='y', facecolor='none', linewidth=0.25)
 
@@ -116,4 +130,4 @@ ax.set_title('Publicly Accessible Green Space as a Proportion of Ward Area in Gr
              fontweight="bold")
 
 # 4.1 save the figure
-fig.savefig('Output/OS_Green_Space_Percent.png', dpi=300, bbox_inches='tight')
+fig.savefig('Output/Green_Space_Change.png', dpi=300, bbox_inches='tight')
