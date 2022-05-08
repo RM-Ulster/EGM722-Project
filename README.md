@@ -1,10 +1,8 @@
 # EGM722-Project
-The steps outlined in this document correspond to the numbering found in the python code, preceded by a hash (#) symbol
 
 **Setup and Installation**
 
 1. Clone or download the GitHub repository, which can be found at the following address:
-    https://github.com/RM-Ulster/EGM722-Project
 2. Install conda and create a conda environment using the environment file (.yml) found in the repository. 
     This file contains a list of the dependencies that are required to run the code:
 3. The code is made up of two parts that run independently of each other.
@@ -12,6 +10,8 @@ The steps outlined in this document correspond to the numbering found in the pyt
 All required files for analysis can be found in the data_files folder.
 
 **Step-by-step guide**
+
+The steps outlined in this section correspond to the numbering found in the python code, preceded by a hash (#) symbol
 
 **Part 1** - Automated classification and calculation of greenspace in London Electoral wards
 
@@ -71,3 +71,11 @@ All required files for analysis can be found in the data_files folder.
 
 **Troubleshooting**
 
+CRS issues
+If using the code with data not included in the package, check that EPSG is correct for the study area and uses metres for a unit. See https://epsg.io/. Check that the coordinate reference system (CRS) for all files matches. 
+
+Modules/Dependancies
+Ensure that the environment created in conda with the Environment.yml file is active when running the code.
+
+Long calculation times/Program appears frozen
+Part 1 can take up to 25 minutes to compute, while part 2 can take up to 1h45m due to the very detailed and complex nature of the green space shape files derived from classification. 
