@@ -43,7 +43,16 @@ The steps outlined in this section correspond to the numbering found in the pyth
    8. Check progress if necessary by removing # from line 
    9. Save the joined shapefile to the Output folder (optional)
 
-5. Plot green space percentages on a map
+4. Plot green space percentages on a map
+
+   1. Set the UTM zone that corresponds to the crs set in section 2
+   2. Create a figure, set the figure size in inches
+   3. Add ward outlines
+   4. Set the data limits and the colour scale
+   5. Add a legend
+   6. Add any additional info
+   7. Add a title
+   8. Save the map in the Output folder (select suitable file name)
 
 4.1. Save the map in the Output folder (select suitable file name)
 
@@ -74,10 +83,13 @@ The steps outlined in this section correspond to the numbering found in the pyth
 4. Plot green space percentages on a map 
 
    1. Set the UTM zone that corresponds to the crs set in section 2
-   2. 
-
-
-4.8. Save the map in the Output folder (select suitable file name)
+   2. Create a figure, set the figure size in inches
+   3. Add ward outlines
+   4. Set the data limits and the colour scale
+   5. Add a legend
+   6. Add any additional info
+   7. Add a title
+   8. Save the map in the Output folder (select suitable file name)
 
 **Troubleshooting**
 
