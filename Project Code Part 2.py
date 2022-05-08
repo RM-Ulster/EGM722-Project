@@ -6,8 +6,6 @@ Data is outputted to thematic map in section 4.
 This code can be applied across another study area and time frame to calculate changes in land cover
 - The troubleshooting guide in the read me provides assistance with adapting it.
 
-
-
 """
 
 # 1 Import the required modules
@@ -91,17 +89,11 @@ print(joined.head(10))
 
 # 4 Output green space percentage to a map
 
-plt.ion() # make the plotting interactive
-
-'''
-generate matplotlib handles to create a legend of the features we put in our map.
-
-Original code by Bob McNabb at: 
-https://github.com/iamdonovan/egm722/blob/week3/Week3/Practical3.ipynb
-'''
+plt.ion()
 
 def generate_handles(labels, colors, edge='k', alpha=0.5):
-    lc = len(colors)  # get the length of the color list
+    """generate matplotlib handles to create a legend of the features we put in our map."""
+    lc = len(colors)
     handles = []
     for i in range(len(labels)):
         handles.append(mpatches.Rectangle((0, 0), 1, 1, facecolor=colors[i % lc], edgecolor=edge, alpha=alpha))
@@ -114,7 +106,7 @@ fig, ax = plt.subplots(1, 1, figsize=(10, 10), subplot_kw=dict(projection=myCRS)
 divider = make_axes_locatable(ax)
 cax = divider.append_axes("right", size="5%", pad=0.1, axes_class=plt.Axes)
 
-gs_plot = joined.plot(column='gs_change', ax=ax, vmin=-25, vmax=25, cmap='RdGn',
+gs_plot = joined.plot(column='gs_change', ax=ax, vmin=-25, vmax=25, cmap='RdYlGn',
                        legend=True, cax=cax, legend_kwds={'label': 'Green Space Percentage Change (2011-2018) (%)'})
 
 ward_outlines = ShapelyFeature(joined['geometry'], myCRS, edgecolor='y', facecolor='none', linewidth=0.25)
@@ -125,14 +117,14 @@ county_handles = generate_handles([''], ['none'], edge='y')
 ax.legend(county_handles, ['Ward Boundaries'], fontsize=12, loc='upper left', framealpha=1)
 
 ax.text(0, 0, 'Contains National Statistics data © Crown copyright and database right (2015) \n '
-                           'Contains Ordnance Survey data © Crown copyright and database right (2015)',
+            'Contains Ordnance Survey data © Crown copyright and database right (2015)',
         verticalalignment='bottom',
         horizontalalignment='left',
         transform=ax.transAxes,
         fontsize=5)
 
-ax.set_title('Publicly Accessible Green Space as a Proportion of Ward Area in Greater London',
+ax.set_title('Change In Proportion Of Area That Is Green Space (2011-2018)',
              fontweight="bold")
 
-# 4.1 save the figure
+# 4.1 save the map
 fig.savefig('Output/Green_Space_Change.png', dpi=300, bbox_inches='tight')
