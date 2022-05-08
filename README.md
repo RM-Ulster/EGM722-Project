@@ -29,8 +29,8 @@ All required files for analysis can be found in the data_files folder.
 
 3. Calculations
 
-3.1.	Calculate the area of each ward. This step will add a new column to the wards geodataframe named area_calc.
-3.1.1.	 As a means of knowing the program’s progress, and to verify that a new column has been added to the wards 
+#3.1.	Calculate the area of each ward. This step will add a new column to the wards geodataframe named area_calc.
+#3.1.1.	 As a means of knowing the program’s progress, and to verify that a new column has been added to the wards 
          geodataframe can be displayed/hidden in the output by removing/adding the hash (#) before the line of code.
 3.2.	Calculate the area of green space in each ward and add a new column to the wards table named GS_Area. 
         (This may take some time)
