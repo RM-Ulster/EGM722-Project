@@ -54,8 +54,6 @@ The steps outlined in this section correspond to the numbering found in the pyth
    7. Add a title
    8. Save the map in the Output folder (select suitable file name)
 
-4.1. Save the map in the Output folder (select suitable file name)
-
 **Part 2** - Automated calculation and mapping of greenspace changes in London Electoral wards between 2011 and 2018.
 
 1. Import the required modules. These are used to perform the operations and have already been listed in the setup and 
@@ -94,10 +92,10 @@ The steps outlined in this section correspond to the numbering found in the pyth
 **Troubleshooting**
 
 CRS issues
-If using the code with data not included in the package, check that EPSG is correct for the study area and uses metres for a unit. See https://epsg.io/. Check that the coordinate reference system (CRS) for all files matches. 
+- If using the code with data not included in the package, check that EPSG is correct for the study area and uses metres for a unit. See https://epsg.io/. Check that the coordinate reference system (CRS) for all files matches. 
 
 Modules/Dependancies
-Ensure that the environment created in conda with the Environment.yml file is active when running the code.
+- Ensure that the environment created in conda with the Environment.yml file is active when running the code.
 
 Long calculation times/Program appears frozen
-Part 1 can take up to 25 minutes to compute, while part 2 can take up to 1h45m due to the very detailed and complex nature of the green space shape files derived from classification. 
+- Part 1 can take up to 25 minutes to compute, while part 2 can take up to 1h45m due to the very detailed and complex nature of the green space shape files derived from classification. 
