@@ -23,8 +23,8 @@ import matplotlib.patches as mpatches
 
 # 2.1 Load the datasets from the data_files folder
 wards = gpd.read_file('data_files/Electoral_Wards.shp')
-gs_2011 = gpd.read_file('data_files/2011_gs_simplified.shp')
-gs_2018 = gpd.read_file('data_files/2018_gs_simplified.shp')
+gs_2011 = gpd.read_file('data_files/2011_gs.shp')
+gs_2018 = gpd.read_file('data_files/2018_gs.shp')
 
 # 2.2 Ensure CRS is the same for all files
 wards = wards.to_crs(epsg=27700)
@@ -61,7 +61,7 @@ for i, row in wards.iterrows():
     wards.loc[i, 'ward_name'] = row['NAME']
 
 # 3.2.1 Show/hide table in output
-print(wards.head(10))
+print(wards.head(0))
 
 # 3.3 Sum area of green space in each ward
 gs_2011_sum = (wards.groupby(['NAME'])['2011_GS_Area'].sum())
@@ -69,20 +69,25 @@ print(gs_2011_sum)
 gs_2018_sum = (wards.groupby(['NAME'])['2018_GS_Area'].sum())
 print(gs_2018_sum)
 
-# 3.4 Join 'gs_sum' to 'wards' table to create a new table named 'joined'
-joined = wards.set_index('NAME').join[gs_2011_sum.rename('2011_GS_Sum'), gs_2018_sum.rename('2018_GS_Sum')]
+# 3.4 Join both green space sums to 'wards' table to create a new table named 'joined'
+join_temp = wards.set_index('NAME').join(gs_2011_sum.rename('2011_GS_Sum'))
+for i, row in join_temp.iterrows():
+    join_temp.loc[i, 'NAME'] = row['ward_name']
+joined = join_temp.set_index('NAME').join(gs_2018_sum.rename('2018_GS_Sum'))
 
 # 3.5 Calculate percentage of green space in each ward
 for i, row in joined.iterrows():
-    joined.loc[i, '2011_gs_perc'] = ((row['2011_GS_Sum'] / row['area_calc']) * 100)
-    joined.loc[i, '2018_gs_perc'] = ((row['2018_GS_Sum'] / row['area_calc']) * 100)
-    joined.loc[i, 'gs_change'] = (row['2018_gs_perc'] - row['2011_gs_perc'])
+    joined.loc[i, 'gs_perc_2011'] = ((row['2011_GS_Sum'] / row['area_calc']) * 100)
+    joined.loc[i, 'gs_perc_2018'] = ((row['2018_GS_Sum'] / row['area_calc']) * 100)
+
+for i, row in joined.iterrows():
+    joined.loc[i, 'gs_change'] = (row['gs_perc_2018'] - row['gs_perc_2011'])
 
 # 3.5.1 Show/hide table in output
 print(joined.head(10))
 
 # 3.6 save shapefile with calculated columns
-# joined.to_file("Output/joined.shp")
+# joined.to_file("Output/gs_2011_2018_diff.shp")
 
 # 4 Output green space percentage to a map
 
