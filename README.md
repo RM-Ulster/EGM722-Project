@@ -2,10 +2,16 @@
 
 **Setup and Installation**
 
-1. Clone or download the GitHub repository, which can be found at the following address:
-2. Install conda and create a conda environment using the environment file (.yml) found in the repository. 
-    This file contains a list of the dependencies that are required to run the code:
-3. The code is made up of two parts that run independently of each other.
+Clone or download the GitHub repository.
+
+Install conda and create a conda environment using the environment file (.yml) found in the repository. This file contains a list of the dependencies that are required to run the code:
+•	 Python 3.8.8
+•	 Geopandas 0.9.0
+•	 Cartopy 0.18.0
+•	 Notebook 6.2.0
+•	 Rasterio 1.2.0
+
+The code is made up of two parts that run independently of each other.
 
 All required files for analysis can be found in the data_files folder.
 
