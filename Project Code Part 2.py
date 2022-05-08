@@ -89,8 +89,6 @@ print(joined.head(10))
 
 # 4 Output green space percentage to a map
 
-plt.ion()
-
 def generate_handles(labels, colors, edge='k', alpha=0.5):
     """generate matplotlib handles to create a legend of the features we put in our map."""
     lc = len(colors)
@@ -99,30 +97,39 @@ def generate_handles(labels, colors, edge='k', alpha=0.5):
         handles.append(mpatches.Rectangle((0, 0), 1, 1, facecolor=colors[i % lc], edgecolor=edge, alpha=alpha))
     return handles
 
+plt.ion()
+
+# Set projection
 myCRS = ccrs.UTM(29)
 
+# Prepare map area
 fig, ax = plt.subplots(1, 1, figsize=(10, 10), subplot_kw=dict(projection=myCRS))
 
 divider = make_axes_locatable(ax)
 cax = divider.append_axes("right", size="5%", pad=0.1, axes_class=plt.Axes)
 
+# Add ward outlines
+ward_outlines = ShapelyFeature(joined['geometry'], myCRS, edgecolor='darkgray', facecolor='none', linewidth=0.25)
+
+ax.add_feature(ward_outlines)
+county_handles = generate_handles([''], ['none'], edge='darkgray')
+
+# Data bounds and colour scale
 gs_plot = joined.plot(column='gs_change', ax=ax, vmin=-25, vmax=25, cmap='RdYlGn',
                        legend=True, cax=cax, legend_kwds={'label': 'Green Space Percentage Change (2011-2018) (%)'})
 
-ward_outlines = ShapelyFeature(joined['geometry'], myCRS, edgecolor='y', facecolor='none', linewidth=0.25)
-
-ax.add_feature(ward_outlines)
-county_handles = generate_handles([''], ['none'], edge='y')
-
+# Legend
 ax.legend(county_handles, ['Ward Boundaries'], fontsize=12, loc='upper left', framealpha=1)
 
+# Copyright info
 ax.text(0, 0, 'Contains National Statistics data © Crown copyright and database right (2015) \n '
             'Contains Ordnance Survey data © Crown copyright and database right (2015)',
         verticalalignment='bottom',
         horizontalalignment='left',
         transform=ax.transAxes,
-        fontsize=5)
+        fontsize=6)
 
+# Title
 ax.set_title('Change In Proportion Of Area That Is Green Space (2011-2018)',
              fontweight="bold")
 
