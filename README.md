@@ -72,8 +72,10 @@ The steps outlined in this section correspond to the numbering found in the pyth
 3.6. Save the joined shapefile to the Output folder (optional)
 
 4. Plot green space percentages on a map
+   1. Set the UTM zone that corresponds to the crs set in section 2
 
-4.1. Save the map in the Output folder (select suitable file name)
+
+4.8. Save the map in the Output folder (select suitable file name)
 
 **Troubleshooting**
 
